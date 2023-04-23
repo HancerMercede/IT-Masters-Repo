@@ -44,7 +44,24 @@ public sealed class CommentRepository:IComment
 
     public async Task<Comment> CreateComment(Guid postId, Comment modelToCreate)
     {
-        throw new NotImplementedException();
+        var query = CommentQueries.CreateCommentForPost;
+        
+        var parameters = new DynamicParameters();
+        parameters.Add("content", modelToCreate.Content);
+        parameters.Add("username", modelToCreate.UserName);
+        parameters.Add("commentdate", modelToCreate.CommentDate);
+        parameters.Add("postid", postId);
+
+        var connection = _context.CreateConnection();
+
+        var id = await connection.ExecuteScalarAsync<Guid>(query, parameters);
+        return new Comment
+        {
+            Id = id, 
+            Content = modelToCreate.Content, 
+            UserName = modelToCreate.UserName,
+            CommentDate = modelToCreate.CommentDate
+        };
     }
 
     public async Task<Comment> UpdateComment(Guid postId, Comment modelToUpdate)
