@@ -1,7 +1,9 @@
-﻿namespace ITMasters.Api.Controllers;
+﻿using Microsoft.Extensions.FileProviders;
+
+namespace ITMasters.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class PostController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -19,25 +21,31 @@ public class PostController : ControllerBase
     public async Task<ActionResult<IEnumerable<PostDto>>> GetAll()
     {
         var posts = await _serviceManager.PostService.GetAllPost();
-        
+
         if (!posts.Any())
+        {
+            _logger.LogInformation("There is nothing in the db please create some new.");
             return NotFound($"There is nothing in the db please create some new.");
+        }
         
         var postsDtos = posts.Adapt<IEnumerable<PostDto>>();
         
         return Ok(postsDtos);
     }
     
-    [HttpGet("{Id:guid}", Name = "GetPostById")]
+    [HttpGet("{id:guid}", Name = "GetPostById")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<IEnumerable<PostDto>>> GetById(Guid Id)
+    public async Task<ActionResult<IEnumerable<PostDto>>> GetById(Guid id)
     {
-        var postdb = await _serviceManager.PostService.GetPostById(Id);
-        
+        var postdb = await _serviceManager.PostService.GetPostById(id);
+
         if (postdb is null)
-            return NotFound($"There is nothing in the db please create some new.");
-        
+        {
+            _logger.LogInformation($"There is nothing in the db with this Id: {id}, please create some new.");
+            return NotFound($"There is nothing in the db with this Id: {id}, please create some new.");
+        }
+
         var postDto = postdb.Adapt<PostDto>();
         
         return Ok(postDto);
@@ -59,16 +67,21 @@ public class PostController : ControllerBase
         return new CreatedAtRouteResult("GetPostById", new { Id = postDto.Id }, postDto);
     }
 
-    [HttpPut("{Id:guid}")]
+    [HttpPut("{id:guid}")]
     [ProducesResponseType(200)]
     [ProducesResponseType(404)]
-    public async Task<ActionResult<PostDto>> UpdatePost(Guid Id, [FromBody] PostUpdateDto modelToUpdate)
+    public async Task<ActionResult<PostDto>> UpdatePost(Guid id, [FromBody] PostUpdateDto modelToUpdate)
     {
 
-        var existPost = await _serviceManager.PostService.GetPostById(Id);
+        var existPost = await _serviceManager.PostService.GetPostById(id);
 
         if (existPost is null)
-            return NotFound("There is not any post with this Id {Id} in the db.");
+        {
+            _logger.LogInformation($"There is not any post with this Id: {id} in the db.");
+            return NotFound($"There is not any post with this Id: {id} in the db.");
+        }
+
+       
 
         existPost.Title = modelToUpdate.Title;
         existPost.Content = modelToUpdate.Content;
@@ -79,10 +92,20 @@ public class PostController : ControllerBase
             return StatusCode(422);
         
         var postdb = modelToUpdate.Adapt(existPost);
-        var result = await _serviceManager.PostService.UpdatePost(Id, postdb);
+        var result = await _serviceManager.PostService.UpdatePost(id, postdb);
 
         var postDto = result.Adapt<PostDto>();
 
         return Ok(postDto);
+    }
+
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(204)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        _logger.LogInformation($"Deleting the Post with id: {id}");
+        await _serviceManager.PostService.DeletePost(id);
+
+        return NoContent();
     }
 }

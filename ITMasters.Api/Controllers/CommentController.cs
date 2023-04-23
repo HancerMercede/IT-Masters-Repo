@@ -1,12 +1,49 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace ITMasters.Api.Controllers;
 
-namespace ITMasters.Api.Controllers;
-
-public class CommentController : Controller
+[ApiController]
+[Route("api/v1/Post/{postId:guid}/[controller]")]
+public class CommentController : ControllerBase
 {
-    // GET
-    public IActionResult Index()
+    private readonly IServiceManager _serviceManager;
+    private readonly ILogger<CommentController> _logger;
+    
+
+    public CommentController(IServiceManager serviceManager,ILogger<CommentController> logger)
     {
-        return View();
+        _serviceManager = serviceManager;
+        _logger = logger;
+    }
+
+    [HttpGet]
+    [ProducesResponseType(200)]
+    public async Task<ActionResult<IEnumerable<CommentDto>>> GetAllCommentByPost(Guid postId)
+    {
+        var comments = await _serviceManager.CommentService.GetAllCommentsByPost(postId);
+
+        if (!comments.Any())
+        {
+            _logger.LogInformation("There is nothing in the db yet, please create some new.");
+            return NotFound("There is nothing in the db yet, please create some new.");
+        }
+  
+        var commentsDtos = comments.Adapt<IEnumerable<CommentDto>>();
+
+        return Ok(commentsDtos);
+    }
+    [HttpGet("{id:guid}")]
+    [ProducesResponseType(200)]
+    public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentByIdForPost(Guid postId, Guid id)
+    {
+        var comment = await _serviceManager.CommentService.GetCommentById(postId, id);
+
+        if (comment is null)
+        {
+            _logger.LogInformation($"There is nothing in the with this id: {id}, please create some new.");
+            return NotFound($"There is nothing in the with this id: {id}, please create some new.");
+        }
+  
+        var commentsDtos = comment.Adapt<CommentDto>();
+
+        return Ok(commentsDtos);
     }
 }

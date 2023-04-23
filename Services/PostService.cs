@@ -5,7 +5,7 @@ using Services.Contracts.Interfaces;
 
 namespace Services;
 
-public class PostService:IPostService
+public sealed class PostService:IPostService
 {
     private readonly IRepositoryManager _repositoryManager;
 
@@ -36,8 +36,8 @@ public class PostService:IPostService
         return await _repositoryManager.Post.UpdatePost(Id, modelToUpdate);
     }
 
-    public async Task DeletePost(int Id)
+    public async Task DeletePost(Guid Id)
     {
-        throw new NotImplementedException();
+        await _repositoryManager.Post.DeletePost(Id);
     }
 }

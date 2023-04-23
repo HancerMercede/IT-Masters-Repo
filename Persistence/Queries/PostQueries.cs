@@ -16,5 +16,5 @@ public static class PostQueries
     public const string UpdatePost = @"UPDATE Posts SET Title = @title, Content = @content, Image=@image
                                        WHERE Id= @id";
 
-    public const string DeletePost = @"DELETE POST WHERE Id = @id";
+    public const string DeletePost = @"DELETE Posts WHERE Id = @id";
 }

@@ -5,7 +5,7 @@ using Persistence.Queries;
 
 namespace Persistence;
 
-public class PostRepository:IPost
+public sealed class PostRepository:IPost
 {
     private readonly DataContext _context;
 
@@ -25,12 +25,12 @@ public class PostRepository:IPost
     }
 
 
-    public async Task<Post> GetPostById(Guid Id)
+    public async Task<Post> GetPostById(Guid id)
     {
         var query = PostQueries.GetPostById;
         
         var parameters = new DynamicParameters();
-        parameters.Add("id",Id);
+        parameters.Add("id",id);
         
         using (var connection = _context.CreateConnection())
         {
@@ -64,15 +64,14 @@ public class PostRepository:IPost
         }
     }
 
-    public async Task<Post> UpdatePost(Guid Id, Post modelToUpdate)
+    public async Task<Post> UpdatePost(Guid id, Post modelToUpdate)
     {
         var query = PostQueries.UpdatePost;
         
         var parameters = new DynamicParameters();
         parameters.Add("title",modelToUpdate.Title);
         parameters.Add("content",modelToUpdate.Content);
-        parameters.Add("image",modelToUpdate.Image);
-        parameters.Add("id", Id);
+        parameters.Add("id", id);
         
         
         using var connection = _context.CreateConnection();
@@ -80,19 +79,21 @@ public class PostRepository:IPost
 
         return new Post
         { 
-            Id = Id,
+            Id = id,
             Title = modelToUpdate.Title, 
             Content = modelToUpdate.Content,
             Image = modelToUpdate.Image,
             PostDate = modelToUpdate.PostDate,
             CreateBy = modelToUpdate.CreateBy
-
         };
     }
 
-    public async Task DeletePost(int Id)
+    public async Task DeletePost(Guid id)
     {
         var query = PostQueries.DeletePost;
         
+        using var connection = _context.CreateConnection();
+    
+        await connection.ExecuteAsync(query, new{id});
     }
 }

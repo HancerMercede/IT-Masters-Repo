@@ -1,9 +1,11 @@
 ﻿using Contracts.Interfaces;
+using Dapper;
 using Entities.Models;
+using Persistence.Queries;
 
 namespace Persistence;
 
-public class CommentRepository:IComment
+public sealed class CommentRepository:IComment
 {
     private readonly DataContext _context;
 
@@ -12,27 +14,45 @@ public class CommentRepository:IComment
         _context = context;
     }
 
-    public Task<IEnumerable<Comment>> GetAllCommentsByPost(int PostId)
+
+    public async Task<IEnumerable<Comment>> GetAllCommentsByPost(Guid postId)
+    {
+        var query = CommentQueries.GetAllCommentsByPost;
+        
+        var parameters = new DynamicParameters();
+        parameters.Add("postId", postId);
+        
+        using var connection = _context.CreateConnection();
+        var comments = await  connection.QueryAsync<Comment>(query, parameters);
+
+        return comments;
+
+    }
+
+    public async Task<Comment> GetCommentById(Guid postId, Guid id)
+    {
+        var query = CommentQueries.GetAllCommentsByPost;
+        
+        var parameters = new DynamicParameters();
+        parameters.Add("postId", postId);
+        parameters.Add("Id", id);
+        using var connection = _context.CreateConnection();
+        var comment = await  connection.QueryFirstAsync<Comment>(query, parameters);
+
+        return comment;
+    }
+
+    public async Task<Comment> CreateComment(Guid postId, Comment modelToCreate)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Comment> GetCommentById(int PostId, int Id)
+    public async Task<Comment> UpdateComment(Guid postId, Comment modelToUpdate)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Comment> CreateComment(int PostId, Comment modelToCreate)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Comment> UpdateComment(int PostId, Comment modelToUpdate)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteComment(int PostId, int Id)
+    public async Task DeleteComment(Guid postId, Guid id)
     {
         throw new NotImplementedException();
     }

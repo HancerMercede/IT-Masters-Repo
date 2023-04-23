@@ -4,7 +4,7 @@ using Services.Contracts.Interfaces;
 
 namespace Services;
 
-public class CommentService:ICommentService
+public sealed class CommentService:ICommentService
 {
     private readonly IRepositoryManager _repositoryManager;
 
@@ -12,28 +12,28 @@ public class CommentService:ICommentService
     {
         _repositoryManager = repositoryManager;
     }
+    
+    public async Task<IEnumerable<Comment>> GetAllCommentsByPost(Guid postId)
+    {
+        return await _repositoryManager.Comment.GetAllCommentsByPost(postId);
+    }
 
-    public Task<IEnumerable<Comment>> GetAllCommentsByPost(int PostId)
+    public async Task<Comment> GetCommentById(Guid postId, Guid id)
+    {
+        return await _repositoryManager.Comment.GetCommentById(postId, id);
+    }
+
+    public async Task<Comment> CreateComment(Guid postId, Comment modelToCreate)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Comment> GetCommentById(int PostId, int Id)
+    public async Task<Comment> UpdateComment(Guid postId, Comment modelToUpdate)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Comment> CreateComment(int PostId, Comment modelToCreate)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Comment> UpdateComment(int PostId, Comment modelToUpdate)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteComment(int PostId, int Id)
+    public async Task DeleteComment(Guid postId, Guid id)
     {
         throw new NotImplementedException();
     }

@@ -9,5 +9,5 @@ public interface IPostService
     Task<Post> GetPostById(Guid Id);
     Task<Post> CreatePost(Post modelToCreate);
     Task<Post> UpdatePost(Guid Id, Post modelToUpdate);
-    Task DeletePost(int Id);
+    Task DeletePost(Guid Id);
 }
