@@ -12,4 +12,6 @@ public static class CommentQueries
 
     public const string CreateCommentForPost = @"INSERT INTO Comments (Content, UserName, CommentDate, PostId) OUTPUT INSERTED.Id
                                                VALUES (@content,  @username, @commentdate,@postid)";
+    
+    public const string UpdateCommentForPost = @"UPDATE Comments SET Content = @content WHERE PostId = @postId AND Id =@id";
 }

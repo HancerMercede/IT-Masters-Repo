@@ -28,9 +28,9 @@ public sealed class CommentService:ICommentService
         return await _repositoryManager.Comment.CreateComment(postId, modelToCreate);
     }
 
-    public async Task<Comment> UpdateComment(Guid postId, Comment modelToUpdate)
+    public async Task<Comment> UpdateComment(Guid postId,Guid id, Comment modelToUpdate)
     {
-        throw new NotImplementedException();
+        return await _repositoryManager.Comment.UpdateComment(postId, id, modelToUpdate);
     }
 
     public async Task DeleteComment(Guid postId, Guid id)

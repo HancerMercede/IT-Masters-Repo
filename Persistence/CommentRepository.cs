@@ -64,9 +64,24 @@ public sealed class CommentRepository:IComment
         };
     }
 
-    public async Task<Comment> UpdateComment(Guid postId, Comment modelToUpdate)
+    public async Task<Comment> UpdateComment(Guid postId, Guid id, Comment modelToUpdate)
     {
-        throw new NotImplementedException();
+        var query = CommentQueries.UpdateCommentForPost;
+        
+        var parameters = new DynamicParameters();
+        parameters.Add("content", modelToUpdate.Content);
+        parameters.Add("postid", postId);
+        parameters.Add("Id", id);
+
+        var connection = _context.CreateConnection();
+
+        await connection.ExecuteAsync(query, parameters);
+        return new Comment
+        {
+            Id = id, 
+            Content = modelToUpdate.Content, 
+            UserName = modelToUpdate.UserName
+        };
     }
 
     public async Task DeleteComment(Guid postId, Guid id)

@@ -65,5 +65,35 @@ public class CommentController : ControllerBase
         var commentDto = commentDb.Adapt<CommentDto>();
 
         return new CreatedAtRouteResult("GetCommentById", new { postId = postId, id = commentDto.Id }, commentDto);
+        
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<CommentDto>> UpdateComment(Guid postId, Guid id, [FromBody] CommentUpdateDto modelToUpdate)
+    {
+        if (!ModelState.IsValid)
+        {
+            _logger.LogInformation("The model is not valid.");
+            return StatusCode(422);
+        }
+
+        var existComment = await _serviceManager.CommentService.GetCommentById(postId, id);
+
+        if (existComment is null)
+        {
+            _logger.LogInformation($"There is no comment int the db with this id: {id}, please verify.");
+             return NotFound($"There is no comment int the db with this id: {id}, please verify.");
+        }
+
+        existComment.Content = modelToUpdate.Content;
+
+        var commentdb = modelToUpdate.Adapt(existComment);
+        
+        var commentResult = await _serviceManager.CommentService.UpdateComment(postId,id, commentdb);
+
+        var commentDto = commentResult.Adapt<CommentDto>();
+
+        return Ok(commentDto);
+
     }
 }

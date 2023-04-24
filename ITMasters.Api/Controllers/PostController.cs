@@ -42,8 +42,8 @@ public class PostController : ControllerBase
 
         if (postdb is null)
         {
-            _logger.LogInformation($"There is nothing in the db with this Id: {id}, please create some new.");
-            return NotFound($"There is nothing in the db with this Id: {id}, please create some new.");
+            _logger.LogInformation($"There is nothing in the db with this Id: {id}, please verify.");
+            return NotFound($"There is nothing in the db with this Id: {id}, please verify.");
         }
 
         var postDto = postdb.Adapt<PostDto>();
@@ -77,12 +77,10 @@ public class PostController : ControllerBase
 
         if (existPost is null)
         {
-            _logger.LogInformation($"There is not any post with this Id: {id} in the db.");
-            return NotFound($"There is not any post with this Id: {id} in the db.");
+            _logger.LogInformation($"There is not any post with this Id: {id} in the db, please verify.");
+            return NotFound($"There is not any post with this Id: {id} in the db, please verify.");
         }
-
-       
-
+        
         existPost.Title = modelToUpdate.Title;
         existPost.Content = modelToUpdate.Content;
         existPost.Image = modelToUpdate.Image;
