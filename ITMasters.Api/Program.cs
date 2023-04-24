@@ -18,7 +18,7 @@ builder.Services.AddSingleton<Database>();
 builder.Services.ConfigureFluentMigrator(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
-
+builder.Services.ConfigureApiVersion();
 
 var app = builder.Build();
 

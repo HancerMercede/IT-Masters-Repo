@@ -190,3 +190,4 @@ C:\Users\HANCER MERCEDE\source\repos\ITMasters.Api\ITMasters.Api\obj\Debug\net7.
 C:\Users\HANCER MERCEDE\source\repos\ITMasters.Api\ITMasters.Api\obj\Debug\net7.0\ITMasters.Api.pdb
 C:\Users\HANCER MERCEDE\source\repos\ITMasters.Api\ITMasters.Api\obj\Debug\net7.0\ITMasters.Api.genruntimeconfig.cache
 C:\Users\HANCER MERCEDE\source\repos\ITMasters.Api\ITMasters.Api\obj\Debug\net7.0\ref\ITMasters.Api.dll
+C:\Users\HANCER MERCEDE\source\repos\ITMasters.Api\ITMasters.Api\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Versioning.dll

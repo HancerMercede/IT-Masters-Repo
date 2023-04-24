@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Contracts.Interfaces;
 using FluentMigrator.Runner;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Persistence;
 using Services;
 using Services.Contracts.Interfaces;
@@ -22,5 +23,11 @@ public static class ServiceExtensions
     public static void ConfigureServiceManager(this IServiceCollection services) =>
         services.AddScoped<IServiceManager, ServiceManager>();
 
- 
+    public static void ConfigureApiVersion(this IServiceCollection services) =>
+        services.AddApiVersioning(v =>
+        {
+            v.DefaultApiVersion = new ApiVersion(1, 0);
+            v.AssumeDefaultVersionWhenUnspecified = true;
+            v.ApiVersionReader = new UrlSegmentApiVersionReader();
+        });
 }

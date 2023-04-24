@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "AuHeD/VkYrVg5gVhs9LDAkRDsuf8ZFR8TG/wpu/xeKi8DB4AzpFb+aBFM2gwdXFJCqmn8tJx0NnzzhnpEKV+wQ==",
+  "dgSpecHash": "8D6AkPGTi8e2asZSGRe86fZGYnGzYGnPPCAFhQ/gAnmxjW8pnli6DDaXjr060x89Ym8tYZokYTI8TjBQsMLOqg==",
   "success": true,
   "projectFilePath": "C:\\Users\\HANCER MERCEDE\\source\\repos\\ITMasters.Api\\ITMasters.Api\\ITMasters.Api.csproj",
   "expectedPackageFiles": [
@@ -26,6 +26,7 @@
     "C:\\Users\\HANCER MERCEDE\\.nuget\\packages\\fluentmigrator.runner.sqlserverce\\3.3.2\\fluentmigrator.runner.sqlserverce.3.3.2.nupkg.sha512",
     "C:\\Users\\HANCER MERCEDE\\.nuget\\packages\\mapster\\7.4.0-pre06\\mapster.7.4.0-pre06.nupkg.sha512",
     "C:\\Users\\HANCER MERCEDE\\.nuget\\packages\\mapster.core\\1.2.1-pre04\\mapster.core.1.2.1-pre04.nupkg.sha512",
+    "C:\\Users\\HANCER MERCEDE\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\5.0.0\\microsoft.aspnetcore.mvc.versioning.5.0.0.nupkg.sha512",
     "C:\\Users\\HANCER MERCEDE\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.5\\microsoft.aspnetcore.openapi.7.0.5.nupkg.sha512",
     "C:\\Users\\HANCER MERCEDE\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\HANCER MERCEDE\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.2\\microsoft.data.sqlclient.2.1.2.nupkg.sha512",

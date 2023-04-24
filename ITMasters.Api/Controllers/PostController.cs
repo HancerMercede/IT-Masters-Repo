@@ -3,7 +3,8 @@
 namespace ITMasters.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion(("1.0"))]
 public class PostController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;

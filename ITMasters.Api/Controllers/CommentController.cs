@@ -3,7 +3,8 @@
 namespace ITMasters.Api.Controllers;
 
 [ApiController]
-[Route("api/v1/Post/{postId:guid}/[controller]")]
+[Route("api/v{version:apiVersion}/Post/{postId:guid}/[controller]")]
+[ApiVersion("1.0")]
 public class CommentController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
@@ -18,6 +19,7 @@ public class CommentController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
     public async Task<ActionResult<IEnumerable<CommentDto>>> GetAllCommentByPost(Guid postId)
     {
         var comments = await _serviceManager.CommentService.GetAllCommentsByPost(postId);
@@ -35,14 +37,15 @@ public class CommentController : ControllerBase
     
     [HttpGet("{id:guid}", Name = "GetCommentById")]
     [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
     public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentByIdForPost(Guid postId, Guid id)
     {
         var comment = await _serviceManager.CommentService.GetCommentById(postId, id);
 
         if (comment is null)
         {
-            _logger.LogInformation($"There is nothing in the with this id: {id}, please create some new.");
-            return NotFound($"There is nothing in the with this id: {id}, please create some new.");
+            _logger.LogInformation($"There is nothing in the db with this id: {id}, please verify.");
+            return NotFound($"There is nothing in the with this id: {id}, please please verify.");
         }
   
         var commentsDtos = comment.Adapt<CommentDto>();
