@@ -86,6 +86,15 @@ public sealed class CommentRepository:IComment
 
     public async Task DeleteComment(Guid postId, Guid id)
     {
-        throw new NotImplementedException();
+        var query = CommentQueries.DeleteCommentForPost;
+
+        var parameters = new DynamicParameters();
+        
+        parameters.Add("postId", postId);
+        parameters.Add("Id", id);
+
+        var connection = _context.CreateConnection();
+
+        await connection.ExecuteAsync(query, parameters);
     }
 }

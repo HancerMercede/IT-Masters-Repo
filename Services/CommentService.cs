@@ -35,6 +35,6 @@ public sealed class CommentService:ICommentService
 
     public async Task DeleteComment(Guid postId, Guid id)
     {
-        throw new NotImplementedException();
+        await _repositoryManager.Comment.DeleteComment(postId, id);
     }
 }

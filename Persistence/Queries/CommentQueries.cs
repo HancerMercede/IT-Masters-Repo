@@ -14,4 +14,6 @@ public static class CommentQueries
                                                VALUES (@content,  @username, @commentdate,@postid)";
     
     public const string UpdateCommentForPost = @"UPDATE Comments SET Content = @content WHERE PostId = @postId AND Id =@id";
+    
+    public const string DeleteCommentForPost = @"DELETE Comments WHERE PostId = @postId AND Id =@id";
 }

@@ -32,6 +32,7 @@ public class CommentController : ControllerBase
 
         return Ok(commentsDtos);
     }
+    
     [HttpGet("{id:guid}", Name = "GetCommentById")]
     [ProducesResponseType(200)]
     public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentByIdForPost(Guid postId, Guid id)
@@ -95,5 +96,14 @@ public class CommentController : ControllerBase
 
         return Ok(commentDto);
 
+    }
+    
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(204)]
+    public async Task<IActionResult>DeleteComment(Guid postId, Guid id)
+    {
+        await _serviceManager.CommentService.DeleteComment(postId, id);
+
+        return NoContent();
     }
 }
